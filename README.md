@@ -5,8 +5,8 @@
   <strong>Report submitted by:</strong>
 </p>
 <p align="center">
-  <strong>B.JASVANTH</strong><sup>1A</sup><br>
-  <strong>JAYANTH PANDEY</strong><sup>2B</sup>
+  <strong>JAYANTH PANDEY</strong><sup>1A</sup><br>
+  <strong>>B.JASVANTH</strong><sup>2B</sup>
 </p>
 <p align="center">
   <em>For the successful completion of the internship as</em><br>
@@ -33,10 +33,10 @@
 
 ---
 
-<sup>A</sup> Lendi Institute of Engineering and Technology, Vizianagaram;
-<sup>B</sup> Chandigarh University;
-<sup>1</sup> jasvanth1063@gmail.com;
-<sup>2</sup> jayantkvmau3@gmail.com;
+<sup>A</sup> Chandigarh University;
+<sup>B</sup> Lendi Institute of Engineering and Technology, Vizianagaram;
+<sup>1</sup> jayantkvmau3@gmail.com;
+<sup>2</sup> jasvanth1063@gmail.com;
 <sup>*</sup> sroy@ideas-tih.org
 
 ---
@@ -181,5 +181,5 @@ summer_intern_group-c-2026/
 ---
 
 *Bird Migration GPS Tracking — ML Project | ISI Kolkata IDEAS Internship 2026 |
-B. Jasvanth (Lendi Institute of Engineering and Technology) &
-Jayant Pandey (Chandigarh University)*
+Jayanth pandey(Chandigarh university) &
+B. Jasvanth (Lendi Institute of Engineering and Technology)*
