@@ -5,7 +5,7 @@
   <strong>Report submitted by:</strong>
 </p>
 <p align="center">
-  <strong><B.JASVANTH></strong><sup>2B</sup><br>
+  <strong>B.JASVANTH</strong><sup>2B</sup><br>
   <strong>JAYANTH PANDEY</strong><sup>1A</sup><br>
 </p>
 <p align="center">
