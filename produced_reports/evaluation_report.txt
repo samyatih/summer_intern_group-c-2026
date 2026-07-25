@@ -1,0 +1,17 @@
+Bird Migration — Phase 8 Model Evaluation Report
+ISI Kolkata IDEAS Internship 2026 — Group C
+============================================================
+Model          : DecisionTreeClassifier
+Validation     : TimeSeriesSplit (5 folds)
+
+CROSS-VALIDATION METRICS (mean ± std):
+  Accuracy    : 0.9985 ± 0.0026
+  Precision   : 0.9986 ± 0.0022
+  Recall      : 0.9985 ± 0.0024
+  F1 Score    : 0.9986 ± 0.0023
+  ROC-AUC     : 0.9973 ± 0.0030
+
+CLUSTERING METRICS (Phase 5 K-Means, k=3):
+  Silhouette Score     : 0.8296
+  Davies-Bouldin Index : 0.2266
+  Calinski-Harabasz    : 1115121.14

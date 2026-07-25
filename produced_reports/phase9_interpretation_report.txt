@@ -1,0 +1,42 @@
+Bird Migration — Phase 9 Model Interpretation Report
+ISI Kolkata IDEAS Internship 2026 — Group C
+============================================================
+Model                 : DecisionTreeClassifier
+Evaluation split      : TimeSeriesSplit last fold (5 total folds)
+Held-out test accuracy: 0.9984
+
+FEATURE IMPORTANCE (top 10):
+  latitude_t-1            : 0.5758
+  longitude_t-1           : 0.4242
+  longitude_t-2           : 0.0000
+  longitude_t-4           : 0.0000
+  latitude_t-5            : 0.0000
+  longitude_t-5           : 0.0000
+  altitude_clipped_t-5    : 0.0000
+  speed_2d_t-5            : 0.0000
+  is_resting_t-5          : 0.0000
+  season_t-5              : 0.0000
+
+SHAP GLOBAL IMPORTANCE — mean |SHAP| (top 10):
+  latitude_t-1            : 0.3292
+  longitude_t-1           : 0.1852
+  longitude_t-2           : 0.0030
+  latitude_t-5            : 0.0007
+  longitude_t-4           : 0.0004
+  longitude_t-5           : 0.0000
+  altitude_clipped_t-5    : 0.0000
+  speed_2d_t-5            : 0.0000
+  is_resting_t-5          : 0.0000
+  season_t-5              : 0.0000
+
+ERROR ANALYSIS:
+  Test records   : 10,317
+  Misclassified  : 17 (0.16%)
+  All errors occurred at latitudes between two zone centroids (transition zones),
+  none occurred within a zone core.
+
+CONFUSION MATRIX (held-out test fold):
+                       Europe/Netherlands  North Africa Transit  West Africa Wintering
+Europe/Netherlands                   2932                    15                      0
+North Africa Transit                    0                  2738                      2
+West Africa Wintering                   0                     0                   4630
