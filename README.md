@@ -1,136 +1,136 @@
-# Bird Migration Trajectory Prediction using GRU
+# Bird Migration Prediction
 
-## Project Overview
-
-This project analyzes and predicts bird migration patterns using GPS tracking data from 3 White Storks (Eric, Nico, Sanne) tracked from August 2013 to April 2014. The system combines deep learning (GRU neural network), unsupervised clustering (HDBSCAN), real-time climate data integration (Open-Meteo API), and AI-powered insights (Google Gemini) to model and predict migration trajectories.
-
-**Developed as part of ISI Kolkata IDEAS Advanced Data Science Internship Programme, 2026.**
-
----
-
-## Team
-
-| Member | Contribution |
-|--------|-------------|
-| Jayant Pandey | Data ingestion, cleaning, feature engineering, climate data integration, MinMaxScaler preprocessing, GRU sequence creation, cross-pipeline debugging, inverse transform post-processing  |
-| B. Jasvanth | HDBSCAN clustering, Folium visualisation, GRU model architecture and training, model evaluation, Gemini AI climate insights, final integration and submission |
-
----
-
-## Dataset
-
-- **Source:** GPS tracking data — White Stork migration
-- **Records:** 61,920 GPS readings across 3 birds
-- **Period:** August 2013 – April 2014
-- **Features:** latitude, longitude, altitude, speed, direction, timestamp
-- **Climate data:** Fetched via Open-Meteo Archive API (temperature, wind speed, precipitation per GPS coordinate)
-
----
-
-## Project Architecture
-
-```
-Raw GPS Data
-     │
-     ▼
-Data Cleaning & Feature Engineering (Jayant)
-     │  ├── Datetime parsing, null handling, chronological sorting
-     │  ├── Temporal features: unix_timestamp, day_of_year, hour
-     │  └── Climate fetch: Open-Meteo API (61,920 coordinates)
-     │
-     ▼
-MinMaxScaler Preprocessing (Jayant)
-     │  ├── Per-bird scaling (latitude, longitude, unix_timestamp, day_of_year, hour)
-     │  └── Scalers saved for inverse transform
-     │
-     ▼
-Sequence Creation (Jayant)
-     │  └── Sliding window: 10 timesteps × 5 features → predict next lat/lon
-     │
-     ▼
-GRU Model Training (Jasvanth)
-     │  ├── Input shape: (n, 10, 5) → Output: (n, 2)
-     │  └── Per-bird models for Eric, Nico, Sanne
-     │
-     ▼
-HDBSCAN Clustering + Folium Visualisation (Jasvanth)
-     │  └── 11 migration clusters identified
-     │
-     ▼
-Gemini AI Climate Insights (Jasvanth)
-     │  └── Climate patterns correlated with migration behaviour
-     │
-     ▼
-Inverse Transform → Real-world Coordinates (Jayant)
-```
+<br>
+<p align="center">
+  <strong>Report submitted by:</strong>
+</p>
+<p align="center">
+  <strong>B.JASVANTH</strong><sup>2B</sup><br>
+  <strong>JAYANTH PANDEY</strong><sup>1A</sup><br>
+</p>
+<p align="center">
+  <em>For the successful completion of the internship as</em><br>
+  <strong>Summer (Data Science) Intern 2026</strong><br>
+  <strong>[Tenure: 7 weeks]</strong>
+</p>
+<p align="center">
+  <em>Under the supervision of</em><br><br>
+  <strong>Mr. Samyabrata Roy</strong><sup>*</sup><br>
+  Associate Software Developer<br>
+  IDEAS - Institute of Data Engineering, Analytics and Science Foundation,<br>
+  Technology Innovation Hub, Indian Statistical Institute, Kolkata
+</p>
+<br>
+<p align="center">
+  <strong>Report submitted to:</strong><br><br>
+  <strong>
+  IDEAS - Institute of Data Engineering, Analytics and Science Foundation,<br>
+  Technology Innovation Hub, Indian Statistical Institute,<br>
+  Kolkata, West Bengal, India
+  </strong>
+</p>
+<br>
 
 ---
 
-## Jayant's Contribution — Technical Detail
-
-**Data Pipeline & Preprocessing**
-- Loaded and cleaned 61,920 GPS records — fixed datetime parsing (UTC), forward filled 443 nulls in `direction` and `speed_2d`, sorted chronologically per bird
-- Engineered 3 temporal features for GRU: `unix_timestamp` (chronological ordering), `day_of_year` (seasonal patterns), `hour` (intra-day behaviour)
-- Applied MinMaxScaler independently per bird — each bird has a different geographic range requiring separate scaling
-
-**Climate Data Integration**
-- Fetched historical weather for all 61,920 GPS coordinates via Open-Meteo Archive API using parallel requests (`ThreadPoolExecutor`, 5 workers)
-- Implemented checkpoint saving every 500 rows for fault tolerance — recovered mid-run from internet outages without data loss
-- Identified and resolved a genuine data gap: 10,388 GPS points over West Africa (lat 12–16°N, lon 16–17°W) had no hourly data in the Open-Meteo archive — forward fill applied within each bird group as standard time-series imputation
-
-**Cross-pipeline Debugging**
-- Debugged GRU input specifications iteratively with teammate — confirmed feature set (5 columns), sequence length (10), column ordering, and date_time encoding strategy (3 separate temporal features vs single timestamp)
-- Identified mismatch between initial sequence spec (seq_length=30, 8 features) and final confirmed spec (seq_length=10, 5 features) — prevented downstream model errors
-- Will debug inverse transform output once GRU predictions are received — real-world coordinate reconstruction using saved scalers
-
-**Sequence Creation**
-- Built sliding window sequences: input shape `(n, 10, 5)`, target shape `(n, 2)` — 80/20 train/test split, no shuffle (time-series order preserved)
-- Output: 12 `.npy` files + `scalers.pkl` handed off to teammate for GRU training
+<sup>A</sup>  Lendi Institute of Engineering and Technology, Vizianagaram;
+<sup>B</sup> Chandigarh University;
+<sup>1</sup> jasvanth1063@gmail.com;
+<sup>2</sup> jayantkvmau3@gmail.com;
+<sup>*</sup> sroy@ideas-tih.org
 
 ---
 
-## Repository Structure
+# IDEAS-TIH Summer Internship Program 2026
 
-```
-bird-migration-gru/
-│
-├── jayant_bird_migration_github.ipynb   ← Jayant's preprocessing pipeline
-├── bird_migration.csv                   ← Raw GPS dataset
-├── bird_migration_with_climate.csv      ← Cleaned dataset with climate columns
-├── scalers.pkl                          ← Fitted MinMaxScaler per bird
-├── X_train_Eric.npy                     ← GRU input sequences
-├── X_test_Eric.npy
-├── y_train_Eric.npy
-├── y_test_Eric.npy
-├── X_train_Nico.npy
-├── X_test_Nico.npy
-├── y_train_Nico.npy
-├── y_test_Nico.npy
-├── X_train_Sanne.npy
-├── X_test_Sanne.npy
-├── y_train_Sanne.npy
-├── y_test_Sanne.npy
-└── README.md
-```
+This repository contains the project work completed as part of the **Summer Internship Program 2026** under **IDEAS - Technology Innovation Hub, Indian Statistical Institute, Kolkata**.
+
+The repository includes source code, datasets, notebooks, documentation, reports, references, and other project-related materials developed by the assigned intern team.
 
 ---
 
-## Sequence Specifications
+# Project Details
 
-| Parameter | Value |
-|-----------|-------|
-| GRU features | latitude, longitude, unix_timestamp, day_of_year, hour |
-| Sequence length | 10 timesteps |
-| Target | Next latitude, longitude |
-| Input shape | (n, 10, 5) |
-| Output shape | (n, 2) |
-| Train/test split | 80/20, no shuffle |
+## Project Title
+
+**Bird Migration Prediction**
 
 ---
 
-## Climate Data Notes
+## Project Category
 
-Historical weather fetched per GPS coordinate using the Open-Meteo Archive API. 10,388 GPS points over West Africa (lat 12–16°N, lon 16–17°W) had no hourly data available in the archive. Forward fill applied within each bird group as standard time-series imputation.
+- ✅ Machine Learning / Deep Learning Project
+- ✅ Data Analysis Project
+
+---
+
+## Problem Statement
+
+### What problem is being addressed
+
+Bird migration is one of the most complex phenomena in ecology, involving billions of birds
+travelling thousands of kilometres annually between breeding and wintering grounds. Traditional
+approaches to studying migration relied on coarse spatial tracking methods that lacked the
+resolution to identify fine-grained geographic zones or predict future movement patterns.
+This project addresses the problem of **predicting which geographic migration zone a bird will
+occupy next**, given its current GPS sensor readings.
+
+### Why the problem is important
+
+Understanding where migratory birds will be is critical for:
+- **Wildlife conservation** — identifying key stopover zones and wintering habitats under
+  threat from climate change and habitat destruction
+- **Climate change research** — tracking shifts in migration timing and routes as seasonal
+  patterns change
+- **Ecological monitoring** — enabling automated early-warning systems for species at risk
+  during migration
+
+The previous GRU-based deep learning approach targeted exact coordinate regression (latitude,
+longitude), which produced a data leakage issue — **R² = 1.0000** — flagged by ISI reviewers.
+The revised approach eliminates this entirely by reframing the problem as **multi-class
+classification**: predict a discrete geographic zone label (cluster ID) rather than a
+continuous coordinate.
+
+### What data, system, or method will be used
+
+**Dataset:** White Stork GPS tracking data (MoveBank)
+- **Records:** 61,920 GPS readings across 3 birds — Eric, Nico, Sanne
+- **Period:** August 2013 – April 2014 (258 days — full annual cycle)
+- **Features:** latitude, longitude, altitude, speed\_2d, direction, timestamp
+
+**Methods:**
+- **Phase 1 — EDA:** 9 interactive Plotly charts to understand data structure,
+  distributions, and seasonal patterns
+- **Phase 2 — Feature Engineering:** Haversine distance, bearing angle, rolling speed mean,
+  season encoding, resting flag, Z-score normalization
+- **Phase 3 — Globe Clustering (K-Means):** Divide the globe into geographic migration
+  zones using K-Means clustering on GPS coordinates
+- **Phase 4 — Classification (Random Forest + XGBoost):** Predict which zone the bird
+  will occupy next given current features
+- **Phase 5 — Evaluation:** F1 score, confusion matrix, K-fold cross-validation with
+  time-aware train/test split
+
+### What output or solution is expected
+
+- A trained **Random Forest** and **XGBoost** classifier that predicts the next geographic
+  migration zone (cluster ID) for any GPS reading
+- An interactive **Plotly Scattergeo map** showing the globe divided into migration zones
+  colour-coded by cluster
+- A complete **internship report** following the ISI Summer Internship Report Template 2026
+- All trained models saved as `rf_model.pkl` and `xgb_model.pkl`
+
+---
+
+## Project Pipeline — 6 Phases
+
+| Phase | Name | Status |
+|---|---|---|
+| 1 | Exploratory Data Analysis (EDA) | ✅ Completed — 9 Plotly charts |
+| 2 | Feature Engineering | ⏳ Next notebook |
+| 3 | Globe Clustering with K-Means | ⏳ Core new contribution |
+| 4 | Cluster Prediction — RF / XGBoost | ⏳ Supervised classification |
+| 5 | Model Evaluation | ⏳ F1, confusion matrix, CV |
+| 6 | Final Output and Report | ⏳ Map + internship report |
 
 ---
 
@@ -138,32 +138,48 @@ Historical weather fetched per GPS coordinate using the Open-Meteo Archive API. 
 
 - Python 3.10
 - pandas, numpy
-- scikit-learn (MinMaxScaler)
-- TensorFlow/Keras (GRU)
-- HDBSCAN
-- Folium
-- Open-Meteo Archive API
-- Google Gemini API
+- plotly (100% — all charts interactive HTML)
+- scikit-learn (KMeans, RandomForest, metrics)
+- xgboost
+- hdbscan
+- Google Colab
+
+---
+
+## Repository Structure
+
+```
+summer_intern_group-c-2026/
+├── README.md
+├── bird_migration.csv                          ← Raw GPS dataset
+├── Bird_Migration_EDA_KMeans_Foundation.ipynb  ← Phase 1 EDA (complete)
+├── bird_migration_features.csv                 ← Phase 2 output (pending)
+├── bird_migration_clustered.csv                ← Phase 3 output (pending)
+├── rf_model.pkl                                ← Phase 4 output (pending)
+├── xgb_model.pkl                               ← Phase 4 output (pending)
+└── Bird_Migration_Complete_Pipeline.ipynb      ← Phase 6 final (pending)
+```
 
 ---
 
 ## How to Run
 
-1. Clone the repository
-```bash
-git clone https://github.com/<your-username>/bird-migration-gru.git
-cd bird-migration-gru
-```
+1. Clone this repository
+2. Upload `bird_migration.csv` to `/content/` in Google Colab
+3. Open `Bird_Migration_EDA_KMeans_Foundation.ipynb`
+4. Run all cells top to bottom
 
-2. Install dependencies
-```bash
-pip install pandas numpy scikit-learn requests folium hdbscan tensorflow
-```
+---
 
-3. Run Jayant's preprocessing notebook
-```
-jayant_bird_migration_github.ipynb
-```
-Note: Climate fetch section is already executed. `bird_migration_with_climate.csv` is pre-generated.
+## Dataset
 
-4. Run Jasvanth's modeling notebook *(coming soon)*
+- **Source:** MoveBank GPS tracking — White Stork migration
+- **Records:** 61,920 GPS readings across 3 birds
+- **Period:** August 2013 – April 2014 (258 days)
+- **Features:** latitude, longitude, altitude, speed\_2d, direction, timestamp, bird\_name
+
+---
+
+*Bird Migration GPS Tracking — ML Project | ISI Kolkata IDEAS Internship 2026 |
+Jayanth pandey(Chandigarh university) &
+B. Jasvanth (Lendi Institute of Engineering and Technology)*
