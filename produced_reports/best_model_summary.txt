@@ -1,0 +1,103 @@
+============================================================
+         MACHINE LEARNING MODEL — PROFESSIONAL SUMMARY
+         File: best_model__1_.pkl
+============================================================
+
+1. MODEL TYPE
+--------------
+Algorithm       : Decision Tree Classifier (scikit-learn)
+Task Type       : Multi-Class Classification (3 classes: 0, 1, 2)
+Split Criterion : Gini Impurity (measures class mixing at each split)
+
+2. HYPERPARAMETERS (Configuration)
+------------------------------------
+Max Depth Allowed       : 8 levels  (actual depth reached: 6)
+Min Samples per Leaf    : 10        (prevents overfitting on tiny groups)
+Min Samples to Split    : 2
+Class Weights           : None      (all classes treated equally)
+Pruning (ccp_alpha)     : 0.0       (no post-pruning applied)
+Random Seed             : 42        (ensures reproducibility)
+Splitter Strategy       : Best      (always picks the optimal split)
+
+3. TREE STRUCTURE
+------------------
+Total Nodes             : 17
+Leaf Nodes (decisions)  : 9
+Actual Tree Depth       : 6 levels
+Total Input Features    : 40
+Features Actually Used  : 3  (Feature 9, Feature 32, Feature 33)
+
+Note: Only 3 out of 40 features drive all predictions. This
+      indicates the model is highly efficient and not relying
+      on noise — a sign of a clean, well-generalizing model.
+
+4. TRAINING DATA OVERVIEW
+--------------------------
+Total Training Samples   : 61,905
+
+Class Distribution at Root (before any splits):
+  Class 0 :  ~18,952 samples  (30.6%)
+  Class 1 :  ~15,407 samples  (24.9%)
+  Class 2 :  ~27,546 samples  (44.5%)
+
+Note: Class 2 is the majority class (~44.5%). The dataset is
+      moderately imbalanced — worth monitoring if Class 1
+      prediction accuracy is critical.
+
+5. FEATURE IMPORTANCE (What drives predictions?)
+-------------------------------------------------
+  Feature[32] :  57.56%  ← PRIMARY driver
+  Feature[33] :  42.44%  ← SECONDARY driver
+  Feature[9]  :   0.00%  ← Minimal/negligible role
+  All others  :   0.00%  ← Not used
+
+Feature 32 and Feature 33 together account for 100% of all
+decisions in this model. If you have feature names, map them
+to indices 32 and 33 to identify the most impactful variables.
+
+6. DECISION LOGIC (How the tree makes predictions)
+---------------------------------------------------
+The tree uses the following key thresholds:
+
+  IF Feature_32 <= 25.65
+      → Predict Class 2   (very high confidence, ~99.99%)
+
+  IF Feature_32 > 25.65
+      AND Feature_33 <= -4.73
+      AND Feature_32 <= 45.00
+      → Predict Class 1   (high confidence)
+
+  IF Feature_32 > 25.65
+      AND Feature_33 > -4.73
+      → Predict Class 0   (high confidence)
+
+  IF Feature_32 > 45.00
+      AND Feature_33 <= -4.73
+      → Predict Class 0
+
+Summary: Feature_32 is the primary gatekeeper. When it is
+low (<= 25.65), the model almost always predicts Class 2.
+When it is high, Feature_33 becomes the deciding factor
+between Class 0 and Class 1.
+
+7. ROOT NODE IMPURITY
+----------------------
+Gini Impurity at Root   : 0.6463  (scale: 0 = pure, 1 = max mixing)
+This moderate impurity at the start drops sharply after just
+1-2 splits — confirming that Feature 32 is a very strong
+separator of classes.
+
+8. KEY TAKEAWAYS
+-----------------
+✔  Highly interpretable: Only 3 features used — easy to explain
+✔  Compact tree: 17 nodes, depth 6 — fast predictions
+✔  Well-constrained: min_samples_leaf=10 reduces overfitting
+✔  Reproducible: random_state=42 ensures consistent results
+⚠  Class imbalance: Class 2 dominates at 44.5% — check recall
+   for minority classes during evaluation
+⚠  Only 2 features carry all the weight — validate these are
+   not data leakage columns
+
+============================================================
+                     END OF SUMMARY
+============================================================
