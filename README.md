@@ -205,13 +205,16 @@ Group-C/
 ├── index.html
 └── README.md
 ```
-
+# To Run Visuals 
+1.open index.html via code editor
+2.now after cloning this repository run this along the terminl.
+3.click on the phase wise visual you want (plotly initialized).
 ---
 
 ## How to Run
 
 1. Clone this repository
-2. Upload `bird_migration.csv` to `/content/` in Google Colab
+2. Upload `bird_migration.csv` to `/content/` in visual studio code
 3. Run notebooks strictly in order from `Data_Cleaning_Feature_Engineering.ipynb` through `Model Interpretation`.
 4. Run all cells top to bottom
 ---
