@@ -57,7 +57,7 @@ This repository contains the complete project work completed by **B. Jasvanth** 
 
 - Machine Learning Project
 - Data Analysis Project
-- Interpretable AI Project
+- Interpretable Project
 
 ---
 
